@@ -13,4 +13,8 @@ export class AppComponent {
   onGetPizza() {
     this.pizzaService.cook();
   }
+
+  onCleanUp() {
+    this.pizzaService.cleanUp();
+  }
 }

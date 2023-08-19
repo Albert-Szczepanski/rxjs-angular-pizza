@@ -45,14 +45,25 @@ export class PizzaService {
       }),
       delay(15000), // Simulate baking time
       finalize(() => {
-        console.log('The pizza is ready. Time to eat!');
+        console.log('Ending the process of pizza making!');
       })
     );
   }
 
   private bake(): void {
     if (!this.pizzaSubscription || this.pizzaSubscription.closed) {
-      this.pizzaSubscription = this.pizza$.subscribe();
+      this.pizzaSubscription = this.pizza$.subscribe(
+        finalPizza => {
+          console.log('Pizza is ready!'); // Outputs "Toppings added!" Pizza is ready!
+        },
+        err => {
+          console.error(err);
+        },
+        () => {
+          console.log('Pizza preparation completed!');
+          this.cleanUp();
+        }
+      );
     }
   }
 
@@ -140,7 +151,7 @@ export class PizzaService {
   private kneadDough(): Observable<any> {
     // Simulate kneading process
     console.log('Kneading dough...')
-    return of("Dough kneaded!").pipe(delay(7000)); // 7 seconds delay as an example
+    return of("Dough kneaded!").pipe(delay(4000)); // 7 seconds delay as an example
   }
 
   private doughRise(): Observable<any> {
